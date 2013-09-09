@@ -1,6 +1,6 @@
 class BigListController < ApplicationController
   def index
-    @all_sites = WebSite.all
-    @first_site = @all_sites.first
+    @site_count = WebSite.count
+    @first_site = WebSite.first
   end
 end

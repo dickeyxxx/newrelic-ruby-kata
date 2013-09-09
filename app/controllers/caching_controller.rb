@@ -9,20 +9,20 @@ class CachingController < ApplicationController
   end
   
   def factorial(n)
-    r = Rails.cache.read('factorial?' + n.to_s)
+    r = Rails.cache.read('factorial' + n.to_s)
     return r if r
     if n == 1
       r = 1
     else
       r = n * factorial(n-1)
     end
-    Rails.cache.write('factorial=' + n.to_s,r)
+    Rails.cache.write('factorial' + n.to_s,r)
     return r
   end
   
   def sin(x)
     # Maclaurin series expansion of sin(x) http://en.wikipedia.org/wiki/Taylor_series
-    r = Rails.cache.read('sin?' + x.to_s)
+    r = Rails.cache.read('sin' + x.to_s)
     return r if r
     r = 0
     (0..10).each do |j|
@@ -31,7 +31,7 @@ class CachingController < ApplicationController
       s = 1 - ((j % 2) * 2)
       r = r + (s * p)
     end
-    Rails.cache.write('sin=' + x.to_s,r)
+    Rails.cache.write('sin' + x.to_s,r)
     return r
   end
   

@@ -16,23 +16,20 @@ class CachingController < ApplicationController
         n * factorial(n-1)
       end
     end
-    Rails.cache.write('factorial' + n.to_s,r)
-    return r
   end
   
   def sin(x)
     # Maclaurin series expansion of sin(x) http://en.wikipedia.org/wiki/Taylor_series
-    r = Rails.cache.read('sin' + x.to_s)
-    return r if r
-    r = 0
-    (0..10).each do |j|
-      n = 1 + (j * 2)
-      p = x**n / factorial(n)
-      s = 1 - ((j % 2) * 2)
-      r = r + (s * p)
+    Rails.cache.fetch ['sin' + x.to_s] do
+      r = 0
+      (0..10).each do |j|
+        n = 1 + (j * 2)
+        p = x**n / factorial(n)
+        s = 1 - ((j % 2) * 2)
+        r = r + (s * p)
+      end
+      return r
     end
-    Rails.cache.write('sin' + x.to_s,r)
-    return r
   end
   
   add_method_tracer :sin, 'Custom/compute_sine'

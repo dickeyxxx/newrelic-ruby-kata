@@ -21,14 +21,13 @@ class CachingController < ApplicationController
   def sin(x)
     # Maclaurin series expansion of sin(x) http://en.wikipedia.org/wiki/Taylor_series
     Rails.cache.fetch ['sin' + x.to_s] do
-      r = 0
-      (0..10).each do |j|
+      (0..10).inject(0) do |r, j|
         n = 1 + (j * 2)
         p = x**n / factorial(n)
         s = 1 - ((j % 2) * 2)
-        r = r + (s * p)
+
+        r + (s * p)
       end
-      return r
     end
   end
   

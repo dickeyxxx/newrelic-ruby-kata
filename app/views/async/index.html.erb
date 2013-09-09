@@ -12,10 +12,9 @@
 <p><%= image_tag('winning-lottery-ticket.jpg', :size => "150x350") %></p>
 <p>Thanks for visiting our page - we'll send your winning lottery numbers by email.</p>
 
-<%
-STDOUT.flush
-
-# After the page is rendered, send an email to remind the user of how awesome we are.
-send_email_to_user
-
-%>
+<%# this code should probably be in a js file, but as mentioned in the async_controller, this isn't a great solution anyways %>
+<%= javascript_tag do %>
+  $(function() {
+    $.get('/async.js');
+  });
+<% end %>

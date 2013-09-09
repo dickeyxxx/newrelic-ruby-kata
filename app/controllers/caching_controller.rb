@@ -9,12 +9,12 @@ class CachingController < ApplicationController
   end
   
   def factorial(n)
-    r = Rails.cache.read('factorial' + n.to_s)
-    return r if r
-    if n == 1
-      r = 1
-    else
-      r = n * factorial(n-1)
+    Rails.cache.fetch ['factorial', n] do
+      if n == 1
+        1
+      else
+        n * factorial(n-1)
+      end
     end
     Rails.cache.write('factorial' + n.to_s,r)
     return r
